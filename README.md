@@ -1,2 +1,4 @@
 # dush
-Docker user shell
+Docker user shell mostly used for poky development
+
+
