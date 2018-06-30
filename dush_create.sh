@@ -42,6 +42,6 @@ if [ $? -eq 0 ]; then
     echo "warning: $TAGNAME already exists"
 fi
 
-echo "build for $HOME $UID $groupid"
+echo "build for $USER $UID:$groupid at $HOME"
 
 docker build --build-arg BGID=$groupid --build-arg BUID=$UID --build-arg USER=$USER --build-arg HOME=$HOME -t $TAGNAME ${base}
