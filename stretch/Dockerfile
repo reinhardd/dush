@@ -5,6 +5,7 @@ FROM debian:stretch
 ARG BGID
 ARG BUID
 ARG USER
+ARG HOME
 
 RUN apt-get update \
     && DEBIAN_FRONTEND=noninteractive apt-get install --no-install-recommends -y \
@@ -33,16 +34,17 @@ RUN apt-get -y install locales
 
 RUN dpkg-reconfigure locales
 
+RUN  apt-get -y install sudo
+
 RUN apt-get clean
 
 RUN rm /root/.bashrc
-
-ENTRYPOINT ["/usr/bin/dumb-init", "--"]
 
 # create a group/user
 RUN groupadd --gid $BGID $USER
 
 # create a non-root user
+RUN echo "$HOME -- $BUID -- $BGID -- $USER"
 RUN useradd --home-dir $HOME -s /bin/bash \
         --uid $BUID --gid $BGID --groups sudo \
         $USER
@@ -60,3 +62,6 @@ WORKDIR /home/$USER
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
 
 USER $USER
+
+ENTRYPOINT ["/usr/bin/dumb-init", "--"]
+
