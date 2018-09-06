@@ -31,6 +31,16 @@ RUN  apt-get -y install gawk wget git-core diffstat unzip texinfo gcc-multilib \
 #RUN  apt-get -y install python-git
 
 RUN apt-get -y install locales
+RUN apt-get -y install subversion
+RUN apt-get -y install nano
+RUN apt-get -y install g++-multilib
+
+#
+# find.pl was removed from perl for security reasons.
+# krogoth build for openssl needs it anyway.
+# the copied variant emulates its behaviour using the File Module.
+#
+COPY find.pl /etc/perl
 
 RUN dpkg-reconfigure locales
 
