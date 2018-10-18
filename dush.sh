@@ -83,6 +83,13 @@ WORKDIR=$PWD
 #        --add-host=gitlab.krauth-eb.local:10.100.250.203 \
 if [ -f hosts.list ]; then
     source hosts.list
+    ADD_HOSTS=""
+    for i in ${HOSTLIST}
+    do
+        : 
+        echo "add host for $i"
+        ADD_HOSTS="--add-host=$i $ADD_HOSTS"
+    done
 fi
 
 #
