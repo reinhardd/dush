@@ -85,6 +85,21 @@ if [ -f hosts.list ]; then
     source hosts.list
 fi
 
+#
+# MOUNTLIST=/path/to/dir1 /path/to/dir2
+if [ -f mount.list ]; then
+    echo "read mount.list"
+    source mount.list
+    if [ "$MOUNTLIST" != "" ]; then
+      for MNT in $MOUNTLIST; do 
+        echo "add mount $MNT"
+        ADD_MOUNTS="--volume=$MNT:$MNT $ADD_MOUNTS"
+      done
+    fi
+fi
+
+echo "with hosts $HOSTLIST and moounts $MOUNTLIST"
+
 # echo "start docker --volume=$BR_CP:/home/build/$BR_INSIDE"
 echo "$WORKDIR -- $DOCKERSCRIPT"
 
