@@ -21,19 +21,8 @@ RUN  apt-get -y install gawk wget git-core diffstat unzip texinfo gcc-multilib \
      build-essential chrpath socat cpio python python3 python3-pip python3-pexpect \
      xz-utils debianutils iputils-ping
 
-# yocto sumo Graphical and Eclipse Plug-In Extras
-#RUN  apt-get -y install libsdl1.2-dev xterm
-
-# yocto sumo Documentation
-#RUN  apt-get -y install xsltproc docbook-utils fop dblatex xmlto
-
-# yocto sumo OpenEmbedded Self-Test
-#RUN  apt-get -y install python-git
-
-RUN apt-get -y install locales
-RUN apt-get -y install subversion
-RUN apt-get -y install nano
-RUN apt-get -y install g++-multilib
+# special essenentials for chromium engine and aris repos
+RUN apt-get -y install locales subversion nano g++-multilib sudo
 
 #
 # find.pl was removed from perl for security reasons.
@@ -42,10 +31,13 @@ RUN apt-get -y install g++-multilib
 #
 COPY find.pl /etc/perl
 
-RUN dpkg-reconfigure locales
 
-RUN  apt-get -y install sudo
-
+# locale 
+RUN echo "en_US.UTF-8 UTF-8" >/etc/locale.gen
+RUN locale-gen 
+RUN echo "LANG=en_US.UTF-8" > /etc/default/locale
+RUN echo "LANGUAGE=en_US:en" >> /etc/default/locale
+RUN echo ": \"${LANG:=en_EN.utf8}\"; export LANG" >>/etc/profile
 RUN apt-get clean
 
 RUN rm /root/.bashrc
@@ -59,14 +51,14 @@ RUN useradd --home-dir $HOME -s /bin/bash \
         --uid $BUID --gid $BGID --groups sudo \
         $USER
 
-RUN localedef -c -f UTF-8 -i en_US en_US.UTF-8#
-
-# RUN locale-gen en_US.UTF-8
-# RUN update-locale LC_ALL=en_US.UTF-8 LANG=en_US.UTF-8
-RUN export LANG=en_US.UTF-8
-
-
 WORKDIR /home/$USER
+
+RUN echo "LANG=en_US.UTF-8" >/home/$USER/.bash_profile
+RUN echo "export LANG" >>/home/$USER/.bash_profile
+RUN echo "LANG=en_US.UTF-8" >/home/$USER/.bashrc
+RUN echo "export LANG" >>/home/$USER/.bashrc
+RUN chown $USER:$USER /home/$USER/.bash_profile
+RUN chown $USER:$USER /home/$USER/.bashrc
 
 # give users in the sudo group sudo access in the container
 RUN echo '%sudo ALL=(ALL) NOPASSWD:ALL' >> /etc/sudoers
