@@ -49,8 +49,6 @@ do
    ADD_HOSTS="--add-host=$i $ADD_HOSTS"
 done
 
-echo "ADD_HOSTS $ADD_HOSTS"
-
 DOCKERIMG=$USER/dush_$UID
 
 docker images | grep $DOCKERIMG
@@ -92,6 +90,8 @@ if [ -f hosts.list ]; then
     done
 fi
 
+echo "ADD_HOSTS $ADD_HOSTS"
+
 #
 # MOUNTLIST=/path/to/dir1 /path/to/dir2
 if [ -f mount.list ]; then
@@ -105,7 +105,7 @@ if [ -f mount.list ]; then
     fi
 fi
 
-echo "with hosts $HOSTLIST and moounts $MOUNTLIST"
+echo "mounts $ADD_MOUNTS"
 
 # echo "start docker --volume=$BR_CP:/home/build/$BR_INSIDE"
 echo "$WORKDIR -- $DOCKERSCRIPT"
