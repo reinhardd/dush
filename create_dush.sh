@@ -6,7 +6,7 @@ if [ $UID -eq 0 ]; then
 fi
 
 base=$1
-# echo "base $base"
+echo "base $base"
 
 if [ "$base" = "" ]; then
     echo "no base image defined"
@@ -34,7 +34,7 @@ if [ "$UID" = "" ]; then
     exit 1
 fi
 
-TAGNAME=$USER/dush_$base_$UID
+TAGNAME=$USER/dush_$base
 echo "create docker image $TAGNAME"
  
 docker ps -a | grep $TAGNAME

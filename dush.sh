@@ -5,11 +5,17 @@
 MOUNT=()
 POSITIONAL=()
 HOSTS=()
+IMAGE=""
 while [[ $# -gt 0 ]]
 do
 key="$1"
 
 case $key in
+    -i|--image)
+    IMAGE=("$2")
+    shift
+    shift
+    ;;
     -m|--mount)
     MOUNT+=("$2")
     shift # past argument
@@ -26,6 +32,12 @@ case $key in
     ;;
 esac
 done
+
+if [ "$IMAGE" = "" ]; then
+  echo "no image"
+  exit 1
+fi
+
 set -- "${POSITIONAL[@]}" # restore positional parameters
 
 echo "pos: ${POSITIONAL[@]} mnt: ${MOUNT[@]} host: ${HOSTS[@]}"
@@ -49,12 +61,13 @@ do
    ADD_HOSTS="--add-host=$i $ADD_HOSTS"
 done
 
-DOCKERIMG=$USER/dush_$UID
+DOCKERIMG=$USER/dush_$IMAGE
+echo "img $DOCKERIMG"
 
 docker images | grep $DOCKERIMG
 
 if [ $? -ne 0 ]; then
-    echo "no docker image for $USER -> look for create_docker_shell.sh"
+    echo "no docker image for $USER -> look for create_dush.sh"
     exit 2
 fi
 
