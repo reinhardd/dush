@@ -12,7 +12,7 @@ RUN apt-get update \
         ca-certificates \
         curl \
     && curl -sLo /tmp/dumb-init.deb \
-		https://github.com/Yelp/dumb-init/releases/download/v1.0.2/dumb-init_1.0.2_amd64.deb \
+		https://github.com/Yelp/dumb-init/releases/download/v1.2.2/dumb-init_1.2.2_amd64.deb \
 	&& dpkg -i /tmp/dumb-init.deb \
 	&& rm /tmp/dumb-init.deb
 
