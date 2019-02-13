@@ -24,6 +24,7 @@ RUN  apt-get -y install gawk wget git-core diffstat unzip texinfo gcc-multilib \
 # special essenentials for chromium engine and aris repos
 RUN apt-get -y install locales subversion nano g++-multilib sudo
 
+RUN apt-get -y install apt-utils ninja-build
 #
 # find.pl was removed from perl for security reasons.
 # krogoth build for openssl needs it anyway.
