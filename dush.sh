@@ -34,8 +34,16 @@ esac
 done
 
 if [ "$IMAGE" = "" ]; then
-  echo "no image"
-  exit 1
+  if [ -f .image ]; then
+    IMAGE=$(head -n 1 .image)
+  fi
+  if [ "$IMAGE" = "" ]; then
+    echo "no image"
+    exit 1
+  fi
+  echo "use last image $IMAGE" 
+else
+    echo "$IMAGE" >.image
 fi
 
 set -- "${POSITIONAL[@]}" # restore positional parameters
