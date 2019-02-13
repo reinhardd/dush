@@ -48,9 +48,7 @@ RUN groupadd --gid $BGID $USER
 
 # create a non-root user
 RUN echo "$HOME -- $BUID -- $BGID -- $USER"
-RUN useradd --home-dir $HOME -s /bin/bash \
-        --uid $BUID --gid $BGID --groups sudo \
-        $USER
+RUN useradd --home-dir $HOME -s /bin/bash --uid $BUID --gid $BGID --groups sudo $USER
 
 WORKDIR /home/$USER
 
