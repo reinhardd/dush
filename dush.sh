@@ -9,7 +9,7 @@ IMAGE=""
 while [[ $# -gt 0 ]]
 do
 key="$1"
-
+echo "parse $key"
 case $key in
     -i|--image)
     IMAGE=("$2")
@@ -25,6 +25,11 @@ case $key in
     HOSTS+=("$2")
     shift
     shift
+    ;;
+    --)   # stop parsing 
+    shift
+    POSITIONAL+=("$*")
+    break;
     ;;
     *)    # unknown option
     POSITIONAL+=("$1") # save it in an array for later
