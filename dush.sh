@@ -6,10 +6,10 @@ MOUNT=()
 POSITIONAL=()
 HOSTS=()
 IMAGE=""
+DOPTS=""
 while [[ $# -gt 0 ]]
 do
 key="$1"
-echo "parse $key"
 case $key in
     -i|--image)
     IMAGE=("$2")
@@ -26,6 +26,11 @@ case $key in
     shift
     shift
     ;;
+    -D|--dockeropts)
+    DOPTS=("$2")
+    shift
+    shift
+    ;;
     --)   # stop parsing 
     shift
     POSITIONAL+=("$*")
@@ -37,6 +42,8 @@ case $key in
     ;;
 esac
 done
+
+echo "DOPTS $DOPTS"
 
 if [ "$IMAGE" = "" ]; then
   if [ -f .image ]; then
@@ -141,7 +148,9 @@ docker run $FLAGS  \
         --volume=$WORKDIR:$WORKDIR \
         $ADD_MOUNTS \
         $ADD_HOSTS \
+        $DOPTS \
         --rm $DOCKERIMG \
         dumb-init /bin/bash -c "(cd $WORKDIR && $DOCKERSCRIPT )"
+        
 #
 # do not do anything here to preserve the return value from the command
