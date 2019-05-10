@@ -25,13 +25,6 @@ RUN  apt-get -y install gawk wget git-core diffstat unzip texinfo gcc-multilib \
 RUN apt-get -y install locales subversion nano g++-multilib sudo
 
 RUN apt-get -y install apt-utils
-#
-# find.pl was removed from perl for security reasons.
-# krogoth build for openssl needs it anyway.
-# the copied variant emulates its behaviour using the File Module.
-#
-# COPY find.pl /etc/perl
-
 
 # locale 
 RUN echo "en_US.UTF-8 UTF-8" >/etc/locale.gen
@@ -48,7 +41,7 @@ RUN groupadd --gid $BGID $USER
 
 # create a non-root user
 RUN echo "$HOME -- $BUID -- $BGID -- $USER"
-RUN useradd --home-dir $HOME -s /bin/bash --uid $BUID --gid $BGID --groups sudo $USER
+RUN useradd -m --home-dir $HOME -s /bin/bash --uid $BUID --gid $BGID --groups sudo $USER
 
 WORKDIR /home/$USER
 
